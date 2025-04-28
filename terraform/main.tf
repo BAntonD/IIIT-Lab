@@ -14,9 +14,10 @@ provider "aws" {
 }
 
 resource "aws_key_pair" "this" {
-  key_name   = var.key_pair_name
-  public_key = var.public_key
+  key_name   = "keysToIITLab5"  # Це ім'я, яке буде присвоєно твоєму ключу в AWS.
+  public_key = file("keysToIITLab5.pem.pub")  # Вказуємо шлях до публічного ключа.
 }
+
 
 resource "aws_security_group" "web_sg" {
   name = "allow_http_and_ssh"
