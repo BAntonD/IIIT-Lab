@@ -15,7 +15,7 @@ provider "aws" {
 
 resource "aws_key_pair" "this" {
   key_name   = "keysToIITLab5"  # Це ім'я, яке буде присвоєно твоєму ключу в AWS.
-  public_key = file("keysToIITLab5.pem.pub")  # Вказуємо шлях до публічного ключа.
+  public_key = file("./keysToIITLab5.pem.pub") # Вказуємо шлях до публічного ключа.
 }
 
 
