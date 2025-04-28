@@ -46,7 +46,7 @@ resource "aws_security_group" "web_sg" {
 }
 
 resource "aws_instance" "web_server" {
-  ami           = "ami-04169656fea786776" # або актуальний для твого регіону
+  ami           = "ami-0c1ac8a41498c1a9c" # або актуальний для твого регіону
   instance_type = "t2.micro"
 
   key_name               = aws_key_pair.this.key_name
