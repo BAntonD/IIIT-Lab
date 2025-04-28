@@ -8,50 +8,21 @@ terraform {
 }
 
 provider "aws" {
-  region     = var.aws_region
-  access_key = var.aws_access_key_id
-  secret_key = var.aws_secret_access_key
+  region = "eu-north-1"    # або інший регіон
+  profile = "default"     # якщо профіль називається "default"
 }
 
-resource "aws_key_pair" "this" {
-  key_name   = "keysToIITLab5"  # Це ім'я, яке буде присвоєно твоєму ключу в AWS.
-  public_key = file("./keys/keysToIITLab5.pem.pub") # Вказуємо шлях до публічного ключа.
+resource "aws_eip" "web_server_ip" {
+  instance = aws_instance.web_server.id
 }
 
-
-resource "aws_security_group" "web_sg" {
-  name = "allow_http_and_ssh"
-
-  ingress {
-    description = "Allow HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Allow SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
 
 resource "aws_instance" "web_server" {
-  ami           = "ami-0c1ac8a41498c1a9c" # або актуальний для твого регіону
-  instance_type = "t2.micro"
+  ami           = "ami-04542995864e26699" # або актуальний для твого регіону
+  instance_type = "t3.micro"
 
-  key_name               = aws_key_pair.this.key_name
-  vpc_security_group_ids = [aws_security_group.web_sg.id]
+  key_name      = "keysToIITLab5"  # Використовуємо існуючий ключ
+  vpc_security_group_ids = ["sg-0e26a6008f52977b3"]  # Використовуємо існуючу групу безпеки
 
   user_data = <<-EOF
               #!/bin/bash
@@ -68,3 +39,4 @@ resource "aws_instance" "web_server" {
     Name = "TerraformWebServer"
   }
 }
+

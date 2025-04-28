@@ -28,6 +28,22 @@ jobs:
         working-directory: terraform
         run: terraform apply -auto-approve
 
+      - name: Deploy Docker containers over SSH
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.INSTANCE_PUBLIC_IP }}
+          username: ubuntu
+          key: ${{ secrets.KEY_PAIR_NAME }}
+          script: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/my-nginx-site:latest
+            sudo docker run -d -p 80:80 ${{ secrets.DOCKER_USERNAME }}/my-nginx-site:latest
+            # і тут додати другий контейнер
+
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -39,3 +55,8 @@ jobs:
       TF_VAR_public_key: ${{ secrets.PUBLIC_KEY }}
       TF_VAR_docker_username: ${{ secrets.DOCKER_USERNAME }}
       TF_VAR_docker_password: ${{ secrets.DOCKER_PASSWORD }}
+
+
+
+
+
