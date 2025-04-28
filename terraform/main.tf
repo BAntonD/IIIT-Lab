@@ -8,8 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-north-1"    # або інший регіон
-  profile = "default"     # якщо профіль називається "default"
+  region = var.aws_region
 }
 
 resource "aws_eip" "web_server_ip" {
