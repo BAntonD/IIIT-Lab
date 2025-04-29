@@ -12,8 +12,15 @@ provider "aws" {
 }
 
 resource "aws_eip" "web_server_ip" {
-  instance = aws_instance.web_server.id
+  vpc = true
 }
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = aws_instance.web_server.id
+  allocation_id = aws_eip.web_server_ip.id
+}
+
+
 
 
 resource "aws_instance" "web_server" {
