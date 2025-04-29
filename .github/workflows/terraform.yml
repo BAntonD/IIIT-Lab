@@ -28,6 +28,9 @@ jobs:
         working-directory: terraform
         run: terraform apply -auto-approve
 
+      - name: Wait for instance to be reachable
+        run: sleep 30
+
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
