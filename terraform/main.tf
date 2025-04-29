@@ -11,14 +11,15 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "aws_eip" "web_server_ip" {
-  vpc = true
+data "aws_eip" "existing" {
+  public_ip = "13.49.90.115"
 }
 
 resource "aws_eip_association" "eip_assoc" {
   instance_id   = aws_instance.web_server.id
-  allocation_id = aws_eip.web_server_ip.id
+  allocation_id = "eipalloc-092ea8dbe4476fa68"
 }
+
 
 
 
