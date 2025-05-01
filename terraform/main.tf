@@ -20,10 +20,6 @@ resource "aws_eip_association" "eip_assoc" {
   allocation_id = "eipalloc-092ea8dbe4476fa68"
 }
 
-
-
-
-
 resource "aws_instance" "web_server" {
   ami           = "ami-04542995864e26699" # або актуальний для твого регіону
   instance_type = "t3.micro"
